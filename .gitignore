@@ -1,6 +1,13 @@
+# macOS
+.DS_Store
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## Xcode project files (단일 .swift 파일 실행 방식 사용)
+*.xcodeproj/
+*.xcworkspace/
 
 ## User settings
 xcuserdata/
