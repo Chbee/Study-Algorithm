@@ -3,7 +3,7 @@
 //  백준 10828번 - 스택 (-)
 //
 //  Created by 손지영 on 2026/01/05
-//  난이도: - | 소요시간: 30분 | 상태: ⏳
+//  난이도: - | 소요시간: 30분 | 상태: ✅
 //  링크: https://www.acmicpc.net/problem/10828
 //
 
@@ -60,13 +60,11 @@ func start() {
     var stack = [Int]()
     
     for _ in 0..<operateSize {
-        guard let command = readLine() else { return }
+        let command = readLine()!.split(separator: " ")
         
-        let commands = command.split(separator: " ").map { String($0) }
-        
-        switch commands.first {
+        switch String(command[0]) {
         case Command.push.rawValue:
-            guard let inputNumberStr = commands.last, let inputNumber = Int(inputNumberStr) else {
+            guard let inputNumberStr = command.last, let inputNumber = Int(String(inputNumberStr)) else {
                 return
             }
             push(inputNumber, in: &stack)
@@ -83,7 +81,7 @@ func start() {
             top(for: stack)
             
         default:
-            assertionFailure("지원하지 않는 명령어입니다.")
+            print("지원하지 않는 명령어입니다.")
         }
     }
 }
@@ -93,8 +91,7 @@ func push(_ number: Int, in arr: inout [Int]) {
 }
 
 func pop(in arr: inout [Int]) {
-    let popLasted = arr.popLast()
-    print(popLasted != nil ? popLasted! : -1)
+    print(arr.popLast() ?? -1)
 }
 
 func size(for arr: [Int]) {
@@ -107,15 +104,7 @@ func empty(for arr: [Int]) {
 }
 
 func top(for arr: [Int]) {
-    let last = arr.last
-    print(last != nil ? last! : -1)
-}
-
-func convertToInt(from str: String?) -> Int  {
-    guard let str = str, let number = Int(str) else {
-        fatalError()
-    }
-    return number
+    print(arr.last ?? -1)
 }
 
 start()
