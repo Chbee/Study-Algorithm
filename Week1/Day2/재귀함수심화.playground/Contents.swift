@@ -139,27 +139,36 @@ func combination(_ arr: [Int], _ n: Int) -> [[Int]] {
 func subsetSumGuide(_ nums: [Int], target: Int) -> [[Int]] {
     var result: [[Int]] = []
     var path: [Int] = []
-
+    
     // TODO: 선택적 가지치기 헬퍼. 예:
     // - nums가 모두 양수일 때 currentSum > target이면 즉시 반환
     // - 남은 모든 수를 더해도 target에 도달할 수 없으면 즉시 반환
 
     func dfs(_ index: Int, _ currentSum: Int) {
-        // TODO: 종료 조건: index == nums.count일 때
-        // - currentSum == target이면 path를 result에 추가
-        // - return
-
+        if index == nums.count {
+            if currentSum == target { result.append(path) }
+            return
+        }
+        
         // TODO: 가지치기 조건(들) 위치
-
-        // 현재 원소 선택
-        // path.append(nums[index])
-        // dfs(index + 1, currentSum + nums[index])
-        // path.removeLast()
-
+        
+        // 현재 원소 선택한경우
+        path.append(nums[index])
+        dfs(index + 1, currentSum + nums[index])
+        path.removeLast()
+        
         // 현재 원소 선택하지 않음
-        // dfs(index + 1, currentSum)
+        if index + 1 < nums.count {
+            dfs(index + 1, currentSum)
+        }
     }
 
     dfs(0, 0)
     return result
 }
+
+// 테스트 예시 (구현 후 확인용)
+// 1) nums = [1, 2, 3], target = 3 -> [[1, 2], [3]]
+// 2) nums = [2, 4, 6], target = 6 -> [[2, 4], [6]]
+// 3) nums = [1, 5, 7, 8], target = 13 -> [[5, 8]]
+print(subsetSumGuide([1, 2, 3], target: 3))
