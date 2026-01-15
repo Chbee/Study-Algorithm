@@ -2,8 +2,8 @@
 //  BOJ-1012
 //  백준 1012번 - 유기농 배추
 //
-//  Created by 손지영 on 2026/01/14 16:20 / 35분
-//  난이도: 실버2 | 소요시간: - | 상태: ⬜
+//  Created by 손지영 on 2026/01/14
+//  난이도: 실버2 | 소요시간: 55분 | 상태: ✅
 //  링크: https://www.acmicpc.net/problem/1012
 //
 
@@ -25,7 +25,7 @@ import Foundation
 //      - 결과값 : rs: Int
 //      - 방문 체크 graph: [[Int]]
 // 3. 시간복잡도
-//      - O(N + M) ~= O((50 + 50)2) ~= O(N)
+//      - O(N*M)  (전체 순회 + DFS가 각 칸을 최대 한 번 방문)
 
 // ============================================
 // 📌 주의사항
@@ -77,17 +77,15 @@ func solution() {
         var chk = Array(repeating: Array(repeating: false, count: m), count: n)
         
         func dfs_solution(y: Int, x: Int) {
-            guard (chk[y])[x] == false else { return }
             (chk[y])[x] = true
             
             for i in 0..<4 {
                 let ny = y + dy[i]
                 let nx = x + dx[i]
                 
-                guard ny > 0, ny <= n, nx > 0, nx <= m else { continue }
+                guard ny >= 0, ny < n, nx >= 0, nx < m else { continue }
                 
-                if (chk[ny])[nx] == false && (map[y])[x] == 1 {
-                    // 방문처리?
+                if (chk[ny])[nx] == false && (map[ny])[nx] == 1 {
                     // 필요처리?
                     dfs_solution(y: ny, x: nx)
                 }
@@ -112,3 +110,4 @@ solution()
 // ============================================
 // ❌ 헷갈린점
 // ============================================
+// 그래프 외곽 탐지 수식..!
