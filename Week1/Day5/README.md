@@ -16,8 +16,8 @@
 ### 푼 문제
 | 문제 | 난이도 | 상태 | 소요시간 | 링크 |
 |------|--------|------|----------|------|
-| BOJ-2606 바이러스 | 실버3 | ❌ | - | [문제](https://www.acmicpc.net/problem/2606) |
-| BOJ-10451 순열 사이클 | 실버3 | ❌ | - | [문제](https://www.acmicpc.net/problem/10451) |
+| BOJ-2606 바이러스 | 실버3 | ✅ | 10분 | [풀이](./BOJ-2606.swift) |
+| BOJ-10451 순열 사이클 | 실버3 | ✅ | 40분 | [풀이](./BOJ-10451.swift) |
 | BOJ-11123 양 한마리... 양 두마리... | 실버3 | ❌ | - | [문제](https://www.acmicpc.net/problem/11123) |
 | BOJ-9372 상근이의 여행 | 실버4 | ❌ | - | [문제](https://www.acmicpc.net/problem/9372) |
 | BOJ-1388 바닥 장식 | 실버4 | ❌ | - | [문제](https://www.acmicpc.net/problem/1388) |
