@@ -7,11 +7,11 @@
 ## 📊 진행 상황
 
 ### Week 1: 기본 완성 + DFS/BFS 마스터
-- [ ] Day 1: 스택/큐 + 완전탐색
-- [ ] Day 2: 완전탐색 심화
-- [ ] Day 3: DFS 기초
-- [ ] Day 4: BFS 기초
-- [ ] Day 5: DFS/BFS 심화
+- [x] Day 1: 스택/큐 + 완전탐색
+- [x] Day 2: 완전탐색 심화
+- [x] Day 3: DFS 기초
+- [x] Day 4: BFS 기초
+- [x] Day 5: DFS/BFS 심화
 - [ ] Day 6: 기출 문제
 - [ ] Day 7: Week 1 복습
 
@@ -40,11 +40,14 @@
 - [ ] Day 30: 최종 정리
 
 ## 📈 통계
-- **총 문제 수**: 0 / 200
-- **Week 1**: 0 / 50
+- **총 문제 수**: 26 / 200
+- **Week 1**: 26 / 50
 - **Week 2**: 0 / 50
 - **Week 3**: 0 / 50
 - **Week 4**: 0 / 50
+
+## 🌱 잔디
+![GitHub Contribution Graph](https://ghchart.rshah.org/Chbee)
 
 ## 🎯 알고리즘별 진행도
 - **DFS/BFS**: 0 / 30
