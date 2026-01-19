@@ -17,7 +17,7 @@
 | 문제 | 난이도 | 상태 | 소요시간 | 링크 |
 |------|--------|------|----------|------|
 | BOJ-1244 스위치 켜고 끄기 | 실버4 | ✅ | 30분 | [풀이](./BOJ-1244.swift) |
-| BOJ-1051 숫자 정사각형 | 실버3 | ❌ | - | [문제](https://www.acmicpc.net/problem/1051) |
+| BOJ-1051 숫자 정사각형 | 실버3 | ✅ | 80분 | [풀이](./BOJ-1051.swift) |
 | BOJ-10157 자리배정 | 실버4 | ❌ | - | [문제](https://www.acmicpc.net/problem/10157) |
 | BOJ-1652 누울 자리를 찾아라 | 실버5 | ❌ | - | [문제](https://www.acmicpc.net/problem/1652) |
 | BOJ-4396 지뢰찾기 | 실버4 | ❌ | - | [문제](https://www.acmicpc.net/problem/4396) |
