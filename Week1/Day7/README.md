@@ -17,7 +17,7 @@
 | 문제 | 난이도 | 상태 | 소요시간 | 링크 |
 |------|--------|------|----------|------|
 | BOJ-2309 일곱 난쟁이 | 브론즈1 | ✅ | 16분 | [풀이](./BOJ-2309.swift) |
-| BOJ-14501 퇴사 | 실버3 | ❌ | - | [문제](https://www.acmicpc.net/problem/14501) |
+| BOJ-14501 퇴사 | 실버3 | ✅ | 40분 | [풀이](./BOJ-14501.swift) |
 | BOJ-1463 1로 만들기 | 실버3 | ❌ | - | [문제](https://www.acmicpc.net/problem/1463) |
 | BOJ-1051 숫자 정사각형 | 실버3 | ❌ | - | [문제](https://www.acmicpc.net/problem/1051) |
 | BOJ-4396 지뢰찾기 | 실버4 | ❌ | - | [문제](https://www.acmicpc.net/problem/4396) |
