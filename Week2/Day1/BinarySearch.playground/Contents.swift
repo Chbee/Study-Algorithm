@@ -109,3 +109,54 @@ var greeting = "Hello, playground"
 ///     - 시간 제한: 1초
 ///     - 공간 제한: 256MB
 ///     - 모든 정수는 Int 범위 내
+///
+/// 예제 입력
+/// 5
+/// 1 3 5 7 9
+/// 7
+/// 예제 출력
+/// 1
+
+/// 이진 검색 가능한지 살펴보기
+/// 1. 정답의 범위는 어디인가?
+///     - 범위는 보든 배열
+/// 2. YES/NO로 판별 가능한가?
+///     - 판단 가능하다. 특정값의 존재 유무이므로
+/// 3. 단조성이 보장되는가?
+///     - 보장됨, 왼쪽으로 갔다가 없으면 바로 오른쪽으로 갈 수 있음
+/// 4. mid가 YES일 때 어느 쪽을 버릴 것인가?
+///     - 오름차순 정렬한 다음에 mid가 x보다 작으면 오른쪽을 버리고, 크면 왼쪽을 버림
+///
+
+//let n = Int(readLine()!)!
+let n = 5
+
+//var s = readLine()!.split(separator: " ").map { Int($0)! }
+
+var s = [1, 3, 5, 7, 9]
+
+//let x = Int(readLine()!)!
+let x = 7
+
+var left = 0
+var right = n - 1
+
+var found = false
+
+while left <= right {
+    var mid = left + (right - left) / 2
+    var midV = s[mid]
+    
+    if midV == x {
+        found = true
+        break
+    } else if midV < x {
+        mid -= 1
+    } else {
+        mid += 1
+    }
+}
+
+print(found ? 1 : 0)
+
+
