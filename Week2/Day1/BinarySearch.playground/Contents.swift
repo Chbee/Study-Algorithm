@@ -150,10 +150,10 @@ while left <= right {
     if midV == x {
         found = true
         break
-    } else if midV < x {
-        mid -= 1
+    } else if midVal < x {
+        left = mid + 1
     } else {
-        mid += 1
+        right = mid - 1
     }
 }
 
