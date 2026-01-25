@@ -6,6 +6,7 @@ on:
       - Practice
     paths:
       - "**/*.swift"
+      - "**/README.md"
 
 jobs:
   update-day-readme:

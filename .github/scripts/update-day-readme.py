@@ -6,7 +6,7 @@ import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, List
+from typing import Optional, List, Set
 
 
 # -----------------------------
@@ -108,6 +108,19 @@ def list_changed_swift_files(base: str, head: str) -> List[Path]:
     for line in out.splitlines():
         p = Path(line.strip())
         if p.suffix == ".swift" and p.exists():
+            files.append(p)
+    return files
+
+
+def list_changed_readme_files(base: str, head: str) -> List[Path]:
+    """
+    base..head 사이 변경된 README.md 파일들 반환.
+    """
+    out = run_git("diff", "--name-only", f"{base}..{head}")
+    files: List[Path] = []
+    for line in out.splitlines():
+        p = Path(line.strip())
+        if p.name == "README.md" and p.exists():
             files.append(p)
     return files
 
@@ -232,6 +245,71 @@ def update_readme_table(readme_path: Path, meta: ProblemMeta) -> bool:
     return True
 
 
+GOAL_LINE_RE = re.compile(
+    r"^(?P<prefix>\s*-\s*\[)(?P<check>[ xX])(\]\s*)(?P<rest>.*문제\s*풀이\s*\()"
+    r"(?P<done>\d+)\s*/\s*(?P<total>\d+)\s*완료(?P<suffix>\).*)$"
+)
+
+
+def is_row_completed(cells: List[str]) -> bool:
+    """
+    소요시간이 '-'가 아니면 완료로 본다.
+    """
+    if len(cells) < 5:
+        return False
+    return cells[3].strip() != "-"
+
+
+def update_readme_goal(readme_path: Path) -> bool:
+    """
+    README의 '학습 목표'에서 문제 풀이 진행도를 갱신.
+    - '### 푼 문제' 테이블을 읽어 완료 개수 계산
+    - 완료/전체 수치 업데이트
+    - 전부 완료 시 체크박스 [x]로 변경
+    """
+    lines = readme_path.read_text(encoding="utf-8").splitlines(True)
+    bounds = find_table_bounds(lines, section_title="### 푼 문제")
+    if not bounds:
+        return False
+
+    _, _, _, data_start, data_end = bounds
+    total = 0
+    completed = 0
+    for i in range(data_start, data_end):
+        row = lines[i].strip()
+        if not row.startswith("|"):
+            continue
+        cells = parse_row_cells(lines[i])
+        if len(cells) < 5:
+            continue
+        total += 1
+        if is_row_completed(cells):
+            completed += 1
+
+    if total == 0:
+        return False
+
+    updated = False
+    for i, line in enumerate(lines):
+        m = GOAL_LINE_RE.match(line.rstrip("\n"))
+        if not m:
+            continue
+
+        check = "x" if completed == total else " "
+        new_line = (
+            f"{m.group('prefix')}{check}] {m.group('rest')}"
+            f"{completed}/{total} 완료{m.group('suffix')}\n"
+        )
+        if lines[i] != new_line:
+            lines[i] = new_line
+            updated = True
+        break
+
+    if updated:
+        readme_path.write_text("".join(lines), encoding="utf-8")
+    return updated
+
+
 # -----------------------------
 # Main
 # -----------------------------
@@ -246,6 +324,8 @@ def main() -> int:
     base = normalize_base_sha(args.base.strip(), head)
 
     changed_swifts = list_changed_swift_files(base, head)
+    changed_readmes = list_changed_readme_files(base, head)
+    readmes_to_update: Set[Path] = set(changed_readmes)
 
     for swift in changed_swifts:
         meta = parse_swift_header(swift)
@@ -257,6 +337,10 @@ def main() -> int:
             continue
 
         update_readme_table(readme, meta)
+        readmes_to_update.add(readme)
+
+    for readme in readmes_to_update:
+        update_readme_goal(readme)
 
     # 변경 여부는 워크플로에서 git status로 판단
     return 0
