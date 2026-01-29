@@ -331,6 +331,12 @@ def main() -> int:
         meta = parse_swift_header(swift)
         if not meta:
             continue
+        # Prefer canonical filename BOJ-<id>.swift if it exists alongside variants
+        prefer_path = swift.parent / f"BOJ-{meta.boj_id}.swift"
+        if prefer_path.exists() and prefer_path != swift:
+            prefer_meta = parse_swift_header(prefer_path)
+            if prefer_meta:
+                meta = prefer_meta
 
         readme = find_target_readme(swift)
         if not readme:
