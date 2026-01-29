@@ -251,13 +251,25 @@ GOAL_LINE_RE = re.compile(
 )
 
 
-def is_row_completed(cells: List[str]) -> bool:
+def is_row_active(cells: List[str]) -> bool:
     """
-    소요시간이 '-'가 아니면 완료로 본다.
+    문제 칼럼이 비어 있으면 집계에서 제외한다.
     """
     if len(cells) < 5:
         return False
-    return cells[3].strip() != "-"
+    problem_cell = cells[0].strip()
+    return problem_cell != "" and problem_cell != "-"
+
+
+def is_row_completed(cells: List[str]) -> bool:
+    """
+    상태 칼럼 기준으로 완료 여부 판단.
+    - ✅, ⚠️ 는 완료로 간주
+    """
+    if len(cells) < 5:
+        return False
+    status = cells[2].strip()
+    return status in {"✅", "⚠️"}
 
 
 def update_readme_goal(readme_path: Path) -> bool:
@@ -280,7 +292,7 @@ def update_readme_goal(readme_path: Path) -> bool:
         if not row.startswith("|"):
             continue
         cells = parse_row_cells(lines[i])
-        if len(cells) < 5:
+        if not is_row_active(cells):
             continue
         total += 1
         if is_row_completed(cells):
