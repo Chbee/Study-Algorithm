@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   update-progress:
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'Practice' }}
+    if: ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'Practice') || (github.event_name == 'push' && github.ref == 'refs/heads/Practice') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,7 +25,7 @@ jobs:
         with:
           persist-credentials: true
           fetch-depth: 0
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_branch || github.ref_name }}
 
       - name: Update root README
         run: python3 .github/scripts/update_progress.py
