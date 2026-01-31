@@ -5,6 +5,11 @@ on:
     workflows: ["Update Day README"]
     types:
       - completed
+  push:
+    branches:
+      - Practice
+    paths:
+      - "Week*/Day*/README.md"
   workflow_dispatch:
 
 permissions:
