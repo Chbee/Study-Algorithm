@@ -44,8 +44,8 @@ def parse_day_readme(path: Path):
             continue
         status = parts[2]
         total += 1
-        # Treat any non "-" status as completed
-        if status and status != "-":
+        # Treat any status other than "-" or "⏳" as completed
+        if status and status not in {"-", "⏳"}:
             solved += 1
 
     problems_completed = total > 0 and solved == total
