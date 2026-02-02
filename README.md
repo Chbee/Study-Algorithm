@@ -8,20 +8,20 @@
 
 ### Week 1: 기본 완성 + DFS/BFS 마스터
 - [x] Day 1: 스택/큐 + 완전탐색
-- [x] Day 2: 완전탐색 심화
-- [x] Day 3: DFS 기초
-- [x] Day 4: BFS 기초
-- [x] Day 5: DFS/BFS 심화
+- [ ] Day 2: 완전탐색 심화
+- [ ] Day 3: DFS 기초
+- [ ] Day 4: BFS 기초
+- [ ] Day 5: DFS/BFS 심화
 - [x] Day 6: 기출 문제
-- [x] Day 7: Week 1 복습
+- [ ] Day 7: Week 1 복습
 
 ### Week 2: 이진탐색 + 그리디 + DP
-- [x] Day 8: 이진탐색
+- [ ] Day 8: 이진탐색
 - [x] Day 9: 그리디
 - [x] Day 10: DP 기초
 - [x] Day 11: 2차원 DP
 - [x] Day 12: DP 심화
-- [x] Day 13: 최단경로
+- [ ] Day 13: 최단경로
 - [ ] Day 14: Week 2 복습
 
 ### Week 3: 고급 자료구조 + 기출 문제 집중

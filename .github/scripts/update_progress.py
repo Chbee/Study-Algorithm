@@ -6,6 +6,22 @@ def parse_day_readme(path: Path):
     text = path.read_text(encoding="utf-8")
     lines = text.splitlines()
 
+    in_goals = False
+    goals_total = 0
+    goals_done = 0
+    for line in lines:
+        if line.strip().startswith("##") and "학습 목표" in line:
+            in_goals = True
+            continue
+        if in_goals:
+            if line.strip().startswith("##"):
+                break
+            m = re.match(r"^\s*-\s*\[([ xX])\]\s+.*$", line)
+            if m:
+                goals_total += 1
+                if m.group(1).lower() == "x":
+                    goals_done += 1
+
     in_table = False
     rows = []
     for line in lines:
@@ -32,7 +48,9 @@ def parse_day_readme(path: Path):
         if status and status != "-":
             solved += 1
 
-    completed = total > 0 and solved == total
+    problems_completed = total > 0 and solved == total
+    goals_completed = goals_total > 0 and goals_done == goals_total
+    completed = goals_completed if goals_total > 0 else problems_completed
     return total, solved, completed
 
 def update_root_readme(root_path: Path, day_status, week_counts):
