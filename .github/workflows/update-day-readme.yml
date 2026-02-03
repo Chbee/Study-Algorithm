@@ -6,6 +6,7 @@ on:
       - Practice
     paths:
       - "**/*.swift"
+      - "Week*/Day*/README.md"
 
 jobs:
   update-day-readme:
@@ -24,6 +25,86 @@ jobs:
               --base "${{ github.event.before }}" \
               --head "${{ github.sha }}"
 
+      - name: Decide update-progress
+        id: decide_progress
+        run: |
+          python3 - <<'PY'
+          import os
+          import re
+          import subprocess
+          from pathlib import Path
+          
+          def run_git(*args: str) -> str:
+              return subprocess.check_output(["git", *args], text=True).strip()
+          
+          NULL_SHA = "0000000000000000000000000000000000000000"
+          def normalize_base_sha(base: str, head: str) -> str:
+              if not base or base.startswith(NULL_SHA):
+                  try:
+                      return run_git("rev-parse", f"{head}~1")
+                  except Exception:
+                      return run_git("rev-list", "--max-parents=0", head).splitlines()[-1]
+              return base
+          
+          def list_changed_files(base: str, head: str):
+              out = run_git("diff", "--name-only", f"{base}..{head}")
+              return [Path(line.strip()) for line in out.splitlines() if line.strip()]
+          
+          def find_target_readme(swift_file: Path):
+              candidate = swift_file.parent / "README.md"
+              if candidate.exists():
+                  return candidate
+              for parent in swift_file.parents:
+                  cand = parent / "README.md"
+                  if cand.exists():
+                      return cand
+              return None
+          
+          def goals_completed(path: Path) -> bool:
+              text = path.read_text(encoding="utf-8")
+              lines = text.splitlines()
+              in_goals = False
+              total = 0
+              done = 0
+              for line in lines:
+                  if line.strip().startswith("##") and "학습 목표" in line:
+                      in_goals = True
+                      continue
+                  if in_goals:
+                      if line.strip().startswith("##"):
+                          break
+                      m = re.match(r"^\s*-\s*\[([ xX])\]\s+.*$", line)
+                      if m:
+                          total += 1
+                          if m.group(1).lower() == "x":
+                              done += 1
+              return total > 0 and done == total
+          
+          base = normalize_base_sha(os.environ.get("BASE", "").strip(), os.environ["HEAD"].strip())
+          head = os.environ["HEAD"].strip()
+          
+          changed = list_changed_files(base, head)
+          readmes = set()
+          for p in changed:
+              if p.suffix == ".swift" and p.exists():
+                  target = find_target_readme(p)
+                  if target:
+                      readmes.add(target)
+              if p.name == "README.md" and p.match("Week*/Day*/README.md") and p.exists():
+                  readmes.add(p)
+          
+          should_run = any(goals_completed(rm) for rm in readmes)
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"run_progress={'true' if should_run else 'false'}\n")
+          PY
+        env:
+          BASE: ${{ github.event.before }}
+          HEAD: ${{ github.sha }}
+
+      - name: Update root README
+        if: steps.decide_progress.outputs.run_progress == 'true'
+        run: python3 .github/scripts/update_progress.py
+
       - name: Commit changes
         run: |
           if [ -z "$(git status --porcelain)" ]; then
@@ -32,6 +113,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add **/README.md
+          git add README.md **/README.md
           git commit -m "update: README 파일 최신화"
           git push
