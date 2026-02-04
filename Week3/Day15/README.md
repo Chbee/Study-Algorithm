@@ -19,7 +19,7 @@
 ### 푼 문제
 | 문제 | 난이도 | 상태 | 소요시간 | 링크 |
 |------|--------|------|----------|------|
-| BOJ-11279 최대 힙 | 실버2 |  |  | [문제](https://www.acmicpc.net/problem/11279) |
+| BOJ-11279 최대 힙 | 실버2 | ✅ | 24분 | [풀이](./BOJ-11279.swift) |
 | BOJ-1927 최소 힙 | 실버2 |  |  | [문제](https://www.acmicpc.net/problem/1927) |
 | BOJ-11286 절댓값 힙 | 실버1 |  |  | [문제](https://www.acmicpc.net/problem/11286) |
 | BOJ-1715 카드 정렬하기 | 골드4 |  |  | [문제](https://www.acmicpc.net/problem/1715) |
