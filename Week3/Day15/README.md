@@ -21,7 +21,7 @@
 |------|--------|------|----------|------|
 | BOJ-11279 최대 힙 | 실버2 | ✅ | 24분 | [풀이](./BOJ-11279.swift) |
 | BOJ-1927 최소 힙 | 실버2 | ✅ | 13분 | [풀이](./BOJ-1927.swift) |
-| BOJ-11286 절댓값 힙 | 실버1 |  |  | [문제](https://www.acmicpc.net/problem/11286) |
+| BOJ-11286 절댓값 힙 | 실버1 | ✅ | 27분 | [풀이](./BOJ-11286.swift) |
 | BOJ-1715 카드 정렬하기 | 골드4 |  |  | [문제](https://www.acmicpc.net/problem/1715) |
 | BOJ-13975 파일 합치기 3 | 골드4 |  |  | [문제](https://www.acmicpc.net/problem/13975) |
 | BOJ-1647 도시 분할 계획 | 골드4 |  |  | [문제](https://www.acmicpc.net/problem/1647) |
