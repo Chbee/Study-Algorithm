@@ -271,6 +271,15 @@ def is_row_completed(cells: List[str]) -> bool:
     status = cells[2].strip()
     return status in {"✅", "⚠️"}
 
+def is_time_filled(cells: List[str]) -> bool:
+    """
+    소요시간 칼럼이 'n분' 형식으로 채워졌는지 판단.
+    """
+    if len(cells) < 5:
+        return False
+    time_cell = cells[3].strip()
+    return re.match(r"^\d+\s*분$", time_cell) is not None
+
 
 def update_readme_goal(readme_path: Path) -> bool:
     """
@@ -287,6 +296,7 @@ def update_readme_goal(readme_path: Path) -> bool:
     _, _, _, data_start, data_end = bounds
     total = 0
     completed = 0
+    time_filled = 0
     for i in range(data_start, data_end):
         row = lines[i].strip()
         if not row.startswith("|"):
@@ -297,9 +307,14 @@ def update_readme_goal(readme_path: Path) -> bool:
         total += 1
         if is_row_completed(cells):
             completed += 1
+        if is_time_filled(cells):
+            time_filled += 1
 
     if total == 0:
         return False
+
+    all_time_filled = time_filled == total
+    done_display = total if all_time_filled else completed
 
     updated = False
     for i, line in enumerate(lines):
@@ -307,10 +322,10 @@ def update_readme_goal(readme_path: Path) -> bool:
         if not m:
             continue
 
-        check = "x" if completed == total else " "
+        check = "x" if done_display == total else " "
         new_line = (
             f"{m.group('prefix')}{check}] {m.group('rest')}"
-            f"{completed}/{total} 완료{m.group('suffix')}\n"
+            f"{done_display}/{total} 완료{m.group('suffix')}\n"
         )
         if lines[i] != new_line:
             lines[i] = new_line
