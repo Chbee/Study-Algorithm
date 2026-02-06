@@ -171,3 +171,39 @@ struct UnionFind1Based {
 ///       - "아커만 역함수"
 ///         우주에 있는 모든 컴퓨터로 처리 가능한 n에 대해 5를 넘지 않는 함수
 ///         👉 사실상 O(1)
+
+/*:
+ ---
+ * 7. union예시
+ ---
+ */
+/// 예시 상황 (BOJ-1043 스타일)
+/// 사람 1~6, 진실을 아는 사람: [1]
+/// 파티:
+///   - P1: [1, 2]
+///   - P2: [3, 4]
+///   - P3: [2, 3]
+///
+/// 파티 내부 union:
+///   P1 -> union(1, 2)
+///   P2 -> union(3, 4)
+///   P3 -> union(2, 3)  // 이 순간 1-2-3-4가 모두 연결됨
+///
+/// 따라서 truthRoot == find(1)와 같은 집합인 파티는 거짓말 불가
+
+var ufExample = UnionFind(7) // 0은 사용 안 함
+
+// 파티 union
+ufExample.union(1, 2)
+ufExample.union(3, 4)
+ufExample.union(2, 3)
+
+let truthRoot = ufExample.find(1)
+
+// 각 파티 대표만 비교해도 됨 (이미 같은 파티 사람들은 연결됨)
+let partyReps = [1, 3, 2] // P1의 대표, P2의 대표, P3의 대표 (아무나 한 명)
+
+for rep in partyReps {
+    let canLie = ufExample.find(rep) != truthRoot
+    print("party rep \(rep): canLie = \(canLie)")
+}
