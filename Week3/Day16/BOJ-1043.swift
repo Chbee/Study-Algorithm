@@ -3,7 +3,7 @@
 //  백준 1043번 - 거짓말
 //
 //  Created by 손지영 on 2026/02/06
-//  난이도: 골드4 | 소요시간: - | 상태: ⬜️
+//  난이도: 골드4 | 소요시간: 50분 | 상태: ✅
 //  링크: https://www.acmicpc.net/problem/1043
 //
 
@@ -44,31 +44,37 @@ func solution() {
     
     if t.count == 1, t[0] == 0 { print(m) }
     else {
-        var parties = [[Int]]
+        
         var uf = UnionFind(n)
+        var partyReps = [Int]()
         
+        /// 진실을 아는 사람 입장
         let truth = Array(t[1..<t.count])
-        
-        for _ in 0..<m {
-            let p = readLine()!.split(separator: " ").map { Int($0)! }
-            parties.append(Array(p[1..<p.count]))
-        }
-        
-        var result = 0
         
         for i in 1..<truth.count {
             uf.union(truth[i], truth[i-1])
         }
         
+        /// 파티 별 입장
+        for _ in 0..<m {
+            let p = readLine()!.split(separator: " ").map { Int($0)! }
+            
+            let e = Array(p[1..<p.count])
+            partyReps.append(e.first!)
+            
+            for i in 1..<e.count {
+                uf.union(e[i], e[i-1])
+            }
+        }
+        
+        var result = 0
+        
         let truthRoot = uf.find(truth.first!)
         
-        for party in parties {
+        for e in partyReps {
             var canLie = true
-            for person in party {
-                if uf.find(person) == truthRoot {
-                    canLie == false
-                    break
-                }
+            if uf.find(e) == truthRoot {
+                canLie = false
             }
             if canLie { result += 1 }
         }
@@ -120,3 +126,31 @@ struct UnionFind {
 // ============================================
 // ❌ 헷갈린점
 // ============================================
+
+/*
+swift BOJ-1043.swift <<EOF
+4 5
+1 1
+1 1
+1 2
+1 3
+1 4
+2 4 1
+EOF
+ => 2 */
+
+/*
+swift BOJ-1043.swift <<EOF
+10 9
+4 1 2 3 4
+2 1 5
+2 2 6
+1 7
+1 8
+2 7 8
+1 9
+1 10
+2 3 10
+1 4
+EOF
+=> 4 */
