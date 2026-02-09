@@ -4,7 +4,7 @@
 2026-02-08
 
 ## 🎯 학습 목표
-- [ ] 10문제 풀이 (1/10 완료)
+- [ ] 10문제 풀이 (2/10 완료)
 - [ ] 풀이 과정 정리
 
 ## 📚 학습 내용
@@ -21,7 +21,7 @@
 | BOJ-33912 N거리 건너기 | 실버2 | ⬜ | - | [풀이](./BOJ-33912.swift) |
 | BOJ-17852 Retribution! | 실버1 | ⬜ | - | [풀이](./BOJ-17852.swift) |
 | BOJ-17213 과일 서리 | 실버2 | ⬜ | - | [풀이](./BOJ-17213.swift) |
-| BOJ-5063 TGN | 브론즈3 | ⬜ | - | [풀이](./BOJ-5063.swift) |
+| BOJ-5063 TGN | 브론즈3 | ✅ | 5분 | [풀이](./BOJ-5063.swift) |
 | BOJ-13798 Step Step Evolution | 골드5 | ⬜ | - | [풀이](./BOJ-13798.swift) |
 | BOJ-6333 Smith Numbers | 골드4 | ⬜ | - | [풀이](./BOJ-6333.swift) |
 | BOJ-25887 Videogame Probability | 골드3 | ⬜ | - | [풀이](./BOJ-25887.swift) |
