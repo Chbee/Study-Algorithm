@@ -267,8 +267,8 @@ func sieve(_ n: Int) -> [Bool] {
         if isPrime[i] {
             var j = i * i
             while j <= n {
-                isPrime[i] = false
-                j += 1
+                isPrime[j] = false
+                j += i
             }
         }
     }
