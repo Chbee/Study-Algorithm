@@ -3,7 +3,7 @@
 //  백준 1917번 - 정육면체 전개도
 //
 //  Created by 손지영 on 2026/02/25
-//  난이도: 골드1 | 소요시간: 20분 | 상태: ⌛️
+//  난이도: 골드1 | 소요시간: 80분 | 상태: ✅
 //  링크: https://www.acmicpc.net/problem/1917
 //
 
@@ -24,15 +24,17 @@ import Foundation
 ///         [3: west] [0: top] [2: east]
 ///                   [4: south]
 ///                   [5: bottom]
-///         - 기본: 1 2 3 4 5 6
-///           동으로 이동 : 4 2 1 6 5 3
-///           서로 이동  : 3 2 6 1 5 4
-///           남으로 이동 : 2 6 3 4 1 5
-///           북으로 이동 : 5 1 3 4 6 2
+///     - 전개도에서 1이 있는 칸을 DFS로 순회하며 큐브를 굴린다.
+///     - 이동 방향(1~4): 동, 서, 남, 북
+///     - 이동마다 주사위를 rollE/rollW/rollS/rollN으로 회전시켜 면 배치를 갱신한다.
+///     - 방문한 칸 수를 세고, 6면이 모두 채워졌는지 확인한다.
+///     - 입력은 6x6 맵 3개이며, 각 맵마다 yes/no를 출력한다.
 /// 2. 자료구조
 ///     - map [[Int]]
-///     - cube [Int]
+///     - check [[Bool]]
+///     - Cube.side [Int]
 /// 3. 시간복잡도
+///     - O(6 * 6)
 // ============================================
 // 📌 주의사항
 // ============================================
@@ -42,29 +44,125 @@ import Foundation
 // ============================================
 
 func solution() {
+    final class Cube {
+        // [top, north, east, west, south, bottom]
+        private var side: [Int]
+        private var temp: [Int]
+        private var foldCount: Int
+        
+        init() {
+            temp = Array(repeating: 0, count: 6)
+            side = Array(repeating: 0, count: 6)
+            foldCount = 0
+        }
+        
+        func cubeCheck() -> Bool {
+            if foldCount > 6 { return false }
+            for i in 0..<6 {
+                if side[i] == 0 { return false }
+            }
+            return true
+        }
+        
+        func setCube(_ value: Int) {
+            foldCount += 1
+            side[0] = value
+        }
+        
+        func changeSide(_ dir: Int) {
+            if dir == 1 { rollE() }
+            else if dir == 2 { rollW() }
+            else if dir == 3 { rollS() }
+            else if dir == 4 { rollN() }
+        }
+        
+        private func rollE() {
+            let t = side[0]
+            side[0] = side[3]
+            side[3] = side[5]
+            side[5] = side[2]
+            side[2] = t
+        }
+        
+        private func rollW() {
+            let t = side[0]
+            side[0] = side[2]
+            side[2] = side[5]
+            side[5] = side[3]
+            side[3] = t
+        }
+        
+        private func rollN() {
+            let t = side[0]
+            side[0] = side[4]
+            side[4] = side[5]
+            side[5] = side[1]
+            side[1] = t
+        }
+        
+        private func rollS() {
+            let t = side[0]
+            side[0] = side[1]
+            side[1] = side[5]
+            side[5] = side[4]
+            side[4] = t
+        }
+    }
+    
+    let dy = [0, 0, 0, 1, -1]
+    let dx = [0, 1, -1, 0, 0]
+    let reverseDir = [0, 2, 1, 4, 3]
+    
+    func outOfBounds(_ y: Int, _ x: Int) -> Bool {
+        return y < 0 || y >= 6 || x < 0 || x >= 6
+    }
+    
     for _ in 0..<3 {
-        var map = [[Int]]()
+        var arr = Array(repeating: Array(repeating: 0, count: 6), count: 6)
+        var check = Array(repeating: Array(repeating: false, count: 6), count: 6)
         
-        for _ in 0..<6 {
-            map.append(readLine()!.split(separator: " ").map { Int($0)! })
+        for i in 0..<6 {
+            arr[i] = readLine()!.split(separator: " ").map { Int($0)! }
         }
         
-        var canSqure = false
-        var cube = [(Int, Int)]()
+        var sy = 0
+        var sx = 0
+        var found = false
         
-        for r in 0..<6 {
-            for c in 0..<6 {
-                if map[r][c] == 1 { cube.append((r, c)) }
+        for y in 0..<6 {
+            if found { break }
+            for x in 0..<6 {
+                if arr[y][x] == 1 {
+                    sy = y
+                    sx = x
+                    found = true
+                    break
+                }
             }
         }
         
-        if cube.isEmpty { print("no") }
-        else {
-            for c in cube {
-                print(c)
+        var side = 0
+        let cube = Cube()
+        
+        func validateCubeOperate(_ y: Int, _ x: Int) {
+            side += 1
+            cube.setCube(side)
+            check[y][x] = true
+            
+            for i in 1...4 {
+                let ny = y + dy[i]
+                let nx = x + dx[i]
+                
+                if outOfBounds(ny, nx) || check[ny][nx] || arr[ny][nx] == 0 { continue }
+                
+                cube.changeSide(i)
+                validateCubeOperate(ny, nx)
+                cube.changeSide(reverseDir[i])
             }
         }
-        print()
+        
+        validateCubeOperate(sy, sx)
+        print(cube.cubeCheck() ? "yes" : "no")
     }
 }
 
