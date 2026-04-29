@@ -35,9 +35,12 @@ func find(_ idx: Int, _ rs: [Point]) {
 }
 
 func bomb_line(_ y: Int, _ x: Int) -> [Point] {
-    var rs = [Point]()
-    for i in 0..<n {
-        rs.append(Point(x: x, y: i))
+    var rs = [Point(x: x, y: y)]
+    for d in [-2, -1, 1, 2] {
+        let ny = y + d
+        if ny >= 0 && ny < n {
+            rs.append(Point(x: x, y: ny))
+        }
     }
     return rs
 }
