@@ -16,16 +16,11 @@ func solution() {
     var temp: [Segment] = []
     var maxV = 0
 
-    for i in 0..<n {
-        let s = segments[i]
-        temp.append(s)
-        dfs(start: i)
-        temp = []
-    }
+    dfs(start: 0)
 
     func dfs(start: Int) {
         if start >= n {
-            if Set(temp.flatMap { [$0.a, $0.b] }).count == (temp.count * 2)
+            if !hasOverlap(temp)
             {
                 maxV = max(maxV, temp.count)
             }
@@ -33,17 +28,24 @@ func solution() {
         }
 
         for i in start..<n {
-            var _temp = temp
-            let current = segments[i]
-            _temp.append(current)
-            guard Set(_temp).count > 1 else { continue }
-            temp.append(current)
+            temp.append(segments[i])
             dfs(start: i + 1)
             temp.removeLast()
         }
     }
 
     print(maxV)
+}
+
+func hasOverlap(_ segs: [Segment]) -> Bool {
+    for i in 0..<segs.count {
+        for j in (i+1)..<segs.count {
+            let r1 = segs[i].a...segs[i].b
+            let r2 = segs[j].a...segs[j].b
+            if r1.overlaps(r2) { return true }
+        }
+    }
+    return false
 }
 
 solution()
