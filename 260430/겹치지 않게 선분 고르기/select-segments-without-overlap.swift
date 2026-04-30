@@ -19,12 +19,9 @@ func solution() {
     dfs(start: 0)
 
     func dfs(start: Int) {
-        if start >= n {
-            if !hasOverlap(temp)
-            {
-                maxV = max(maxV, temp.count)
-            }
-            return
+        if !hasOverlap(temp)
+        {
+            maxV = max(maxV, temp.count)
         }
 
         for i in start..<n {
